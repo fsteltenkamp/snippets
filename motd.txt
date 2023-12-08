@@ -1,0 +1,24 @@
+//--------------------------------------------------------------------------\\
+||                               %hostname%                                 ||
+||--------------------------------------------------------------------------||
+||                       Willkommen auf diesem Server!                      ||
+||               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                 ||
+||                Administrator: %adminname% (%adminmail%)                  ||
+||--------------------------------------------------------------------------||
+||  This is a private system that you are not to give out access to anyone  ||
+||  without permission from the admin. No illegal files or activity. Stay,  ||
+|| in your home directory, keep the system clean, and make regular backups. ||
+||   -==  DISABLE YOUR PROGRAMS FROM KEEPING SENSITIVE LOGS OR HISTORY ==-  ||
+||--------------------------------------------------------------------------||
+|| The programs included with the Debian GNU/Linux system are free Software ||
+||    The Exact distribution terms for each program are described in the    ||
+||             individual files in /usr/share/doc/*/copyright.              ||
+||                                                                          ||
+||    Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent     ||
+||                       permittet by applicable law.                       ||
+||--------------------------------------------------------------------------||
+||                            Systeminformationen:                          ||
+||                   CPU: %cpuinfo%                                         ||
+||                   RAM: %meminfo%                                         ||
+||                   HDD: %storageinfo%                                     ||
+\\--------------------------------------------------------------------------//

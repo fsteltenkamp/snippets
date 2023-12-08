@@ -1,0 +1,34 @@
+#Include /etc/ssh/sshd_config.d/*.conf
+
+Port 22
+#AddressFamily any
+ListenAddress 0.0.0.0
+#ListenAddress ::
+
+#deny any logins:
+PasswordAuthentication no
+PubkeyAuthentication no
+PermitRootLogin no
+
+ChallengeResponseAuthentication no
+UsePAM yes
+X11Forwarding no
+PrintMotd no
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+# override default of no subsystems
+Subsystem       sftp    /usr/lib/openssh/sftp-server
+
+# Example of overriding settings on a per-user basis
+Match Address 192.168.191.*
+        X11Forwarding yes
+        PermitRootLogin prohibit-password
+        PubkeyAuthentication yes
+        PasswordAuthentication no
+Match Address 127.0.0.1
+        X11Forwarding yes
+        PermitRootLogin prohibit-password
+        PubkeyAuthentication yes
+        PasswordAuthentication no
