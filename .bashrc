@@ -120,3 +120,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# PATH Variable:
+export PATH="/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin:$PATH"
