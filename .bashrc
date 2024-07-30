@@ -113,4 +113,4 @@ if ! shopt -oq posix; then
 fi
 
 # PATH Variable:
-export PATH="/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin:~/.local/bin:$PATH"
