@@ -57,44 +57,35 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]'
+    if [ -z "$CONTAINER_ID" ]; then
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]'
+    else
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;32m\][$CONTAINER_ID] \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]'
+    fi
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    if [ -z "$CONTAINER_ID" ]; then
+        PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    else
+        PS1='${debian_chroot:+($debian_chroot)}\u@\h [$CONTAINER_ID]:\w\$ '
+    fi
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    if [ -z "$CONTAINER_ID" ]; then
+        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    else
+        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h [$CONTAINER_ID]: \w\a\]$PS1"
+    fi
     ;;
 *)
     ;;
 esac
 
-#add navigational shortcuts
-alias ..='cd ..'
-alias ...='cd ../..'
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='LC_COLLATE=C ls --color=auto -hAl --group-directories-first'
-    alias dir='dir --color=auto -h'
-    alias vdir='vdir --color=auto -h'
-
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
-fi
-
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
