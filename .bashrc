@@ -27,12 +27,12 @@ force_color_prompt=yes
 # Functions for adding stuff to the prompt:
 function git_branch() {
     if [ -d .git ] ; then
-        printf "%s" "($(git branch 2> /dev/null | awk '/\*/{print $2}'))";
+        printf "%s" "($(git branch 2> /dev/null | awk '/\*/{print $2}')) ";
     fi
 }
 function docker_container() {
     if ! [ -z "$CONTAINER_ID" ]; then
-        printf "%s" "[$CONTAINER_ID]"
+        printf "%s" "[$CONTAINER_ID] "
     fi
 }
 
@@ -65,16 +65,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1=${pur}'╭ '${red}'${debian_chroot:+($debian_chroot)}\u'${ylw}'@'${cyn}'\h '${grn}'$(docker_container) '${blu}'$(git_branch) '${ylw}'\w \n'${pur}'╰ \$ '${clr}
+    PS1=${pur}'╭ '${red}'${debian_chroot:+($debian_chroot)}\u'${ylw}'@'${cyn}'\h '${grn}'$(docker_container)'${blu}'$(git_branch)'${ylw}'\w \n'${pur}'╰ \$ '${clr}
 else
-    PS1='╭ ${debian_chroot:+($debian_chroot)}\u@\h $(docker_container):\w\n╰ \$ '
+    PS1='╭ ${debian_chroot:+($debian_chroot)}\u@\h $(docker_container)$(git_branch):\w\n╰ \$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h $(docker_container): \w\a\]$PS1"
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h $(docker_container)$(git_branch): \w\a\]$PS1"
     ;;
 *)
     ;;
