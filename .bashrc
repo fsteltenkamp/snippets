@@ -36,6 +36,13 @@ function docker_container() {
     fi
 }
 
+# other functions
+function bashrc_update() {
+    cd ~
+    wget https://git.steltenkamp.net/fsteltenkamp/snippets/raw/branch/main/.bashrc -O .bashrc
+    wget https://git.steltenkamp.net/fsteltenkamp/snippets/raw/branch/main/.bash_aliases -O .bash_aliases
+}
+
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
