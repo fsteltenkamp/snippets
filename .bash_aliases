@@ -14,6 +14,17 @@ if [ -x /usr/bin/dircolors ]; then
     #alias egrep='egrep --color=auto'
 fi
 
+# Display the directory structure better.
+alias tree='tree --dirsfirst -F'
+
+# Make a directory and all parent directories with verbosity.
+alias mkdir='mkdir -p -v'
+
+# use hg to search in history
+function hg() {
+    history | grep "$1";
+}
+
 # some more ls aliases
 #alias ll='ls -l'
 #alias la='ls -A'
