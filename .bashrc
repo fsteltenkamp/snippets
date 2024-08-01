@@ -1,6 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 case $- in
@@ -8,27 +6,35 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# Variables for color
+blk='\[\033[01;30m\]'   # Black
+red='\[\033[01;31m\]'   # Red
+grn='\[\033[01;32m\]'   # Green
+ylw='\[\033[01;33m\]'   # Yellow
+blu='\[\033[01;34m\]'   # Blue
+pur='\[\033[01;35m\]'   # Purple
+cyn='\[\033[01;36m\]'   # Cyan
+wht='\[\033[01;37m\]'   # White
+clr='\[\033[00m\]'      # Reset
 
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTCONTROL=ignoreboth  # don't put duplicate lines or lines starting with space in the history.
+shopt -s histappend     # append to the history file, don't overwrite it
 HISTFILESIZE=99999999
 HISTSIZE=99999999
+shopt -s checkwinsize   # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+force_color_prompt=yes
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# Functions for adding stuff to the prompt:
+function git_branch() {
+    if [ -d .git ] ; then
+        printf "%s" "($(git branch 2> /dev/null | awk '/\*/{print $2}'))";
+    fi
+}
+function docker_container() {
+    if ! [ -z "$CONTAINER_ID" ]; then
+        printf "%s" "[$CONTAINER_ID]"
+    fi
+}
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -39,11 +45,6 @@ fi
 case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -57,41 +58,25 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    if [ -z "$CONTAINER_ID" ]; then
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \n└ \[\033[01;35m\]\$ \[\033[00m\]'
-    else
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;32m\][$CONTAINER_ID] \[\033[01;33m\]\w \n└ \[\033[01;35m\]\$ \[\033[00m\]'
-    fi
+    PS1=${pur}'┌ '${red}'${debian_chroot:+($debian_chroot)}\u'${ylw}'@'${cyn}'\h '${grn}'$(docker_container) '${blu}'$(git_branch) '${ylw}'\w \n'${pur}'└ \$ '${clr}
 else
-    if [ -z "$CONTAINER_ID" ]; then
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h:\w\n└ \$ '
-    else
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h [$CONTAINER_ID]:\w\n└ \$ '
-    fi
+    PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h $(docker_container):\w\n└ \$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    if [ -z "$CONTAINER_ID" ]; then
-        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    else
-        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h [$CONTAINER_ID]: \w\a\]$PS1"
-    fi
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h $(docker_container): \w\a\]$PS1"
     ;;
 *)
     ;;
 esac
 
 # colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
+# alias config
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
