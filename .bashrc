@@ -58,9 +58,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1=${pur}'┌ '${red}'${debian_chroot:+($debian_chroot)}\u'${ylw}'@'${cyn}'\h '${grn}'$(docker_container) '${blu}'$(git_branch) '${ylw}'\w \n'${pur}'└ \$ '${clr}
+    PS1=${pur}'╭ '${red}'${debian_chroot:+($debian_chroot)}\u'${ylw}'@'${cyn}'\h '${grn}'$(docker_container) '${blu}'$(git_branch) '${ylw}'\w \n'${pur}'╰ \$ '${clr}
 else
-    PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h $(docker_container):\w\n└ \$ '
+    PS1='╭ ${debian_chroot:+($debian_chroot)}\u@\h $(docker_container):\w\n╰ \$ '
 fi
 unset color_prompt force_color_prompt
 
