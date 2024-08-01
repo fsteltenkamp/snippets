@@ -58,15 +58,15 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     if [ -z "$CONTAINER_ID" ]; then
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \n└\[\033[01;35m\]\> \[\033[00m\]'
+        PS1='┌ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \n└ \[\033[01;35m\]\$ \[\033[00m\]'
     else
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;32m\][$CONTAINER_ID] \[\033[01;33m\]\w \n└\[\033[01;35m\]\$ \[\033[00m\]'
+        PS1='┌ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;32m\][$CONTAINER_ID] \[\033[01;33m\]\w \n└ \[\033[01;35m\]\$ \[\033[00m\]'
     fi
 else
     if [ -z "$CONTAINER_ID" ]; then
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h:\w\n└\$ '
+        PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h:\w\n└ \$ '
     else
-        PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h [$CONTAINER_ID]:\w\n└\$ '
+        PS1='┌ ${debian_chroot:+($debian_chroot)}\u@\h [$CONTAINER_ID]:\w\n└ \$ '
     fi
 fi
 unset color_prompt force_color_prompt
