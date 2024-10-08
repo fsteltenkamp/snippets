@@ -37,7 +37,7 @@ if [ "$mode" == "backup" ]; then
   mkdir -p /mnt/dvbr/$volume
   echo "Starting backup for Volume $volume..."
   # backup volume
-  docker run --rm --mount source=$volume,target=/mnt/backmeup -v /mnt/dvbr/$volume/:/mnt/backups busybox sh -c "cd /mnt/backmeup && tar -czf /mnt/backups/backup-$(date +'%Y%d%m-%H%M%S').tar.gz ."
+  docker run --rm --mount source=$volume,target=/mnt/backmeup -v /mnt/dvbr/$volume/:/mnt/backups busybox sh -c "cd /mnt/backmeup && tar -czf /mnt/backups/backup-$(date +'%Y%m%d-%H%M%S').tar.gz ."
   echo "Backup done."
 fi
 
