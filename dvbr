@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Check if at least two arguments are provided
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $0 <mode> <volume> [path]"
+  exit 1
+fi
+
+# Assign inputs to variables
+mode=$1
+volume=$2
+path=$3
+
+# Check if mode is either 'backup' or 'restore'
+if [[ "$mode" != "backup" && "$mode" != "restore" ]]; then
+  echo "Error: Mode must be either 'backup' or 'restore'"
+  exit 1
+fi
+
+# Check if volume is provided
+if [ -z "$volume" ]; then
+  echo "Error: Volume name must be provided"
+  exit 1
+fi
+
+volume_check=$(docker inspect "$volume")
+
+# Check if the output of the inspect command starts with "[]"
+if [[ "$volume_check" =~ ^\[\] ]]; then
+  echo "Error: Volume '$volume' does not exist"
+  exit 1
+fi
+
+# If mode is 'backup':
+if [ "$mode" == "backup" ]; then
+  # check directories:
+  mkdir -p /mnt/dvbr/$volume
+  echo "Starting backup for Volume $volume..."
+  # backup volume
+  docker run --rm --mount source=$volume,target=/mnt/backmeup -v /mnt/dvbr/$volume/:/mnt/backups busybox sh -c "cd /mnt/backmeup && tar -czf /mnt/backups/backup-$(date +'%Y%d%m-%H%M%S').tar.gz ."
+  echo "Backup done."
+fi
+
+# If mode is 'restore', check if path is provided and valid
+if [ "$mode" == "restore" ]; then
+  if [ -z "$path" ]; then
+    echo "Error: Path must be provided in restore mode"
+    exit 1
+  fi
+
+  # Check if the file has a .tar.gz extension
+  if [[ ! "$path" =~ \.tar\.gz$ ]]; then
+    echo "Error: Path must be a valid .tar.gz file"
+    exit 1
+  fi
+
+  # Check if the file exists
+  if [ ! -f "$path" ]; then
+    echo "Error: File does not exist"
+    exit 1
+  fi
+
+  echo "Restoring backup to Volume $volume..."
+  docker run --rm --mount source=$volume,target=/mnt/restoreme -v /mnt/dvbr/$volume/:/mnt/backups busybox sh -c "cd /mnt/restoreme && tar -xzf /mnt/backups/$path --overwrite"
+fi
